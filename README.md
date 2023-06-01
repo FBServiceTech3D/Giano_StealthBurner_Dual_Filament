@@ -1,3 +1,4 @@
 # StealthBurner_Dual_Filament
 This is a remix from https://github.com/HelgeKeck/rome adapted for StealthBurner Voron
-![257287_190999694280717_8052977_o](https://github.com/FBServiceTech3D/StealthBurner_Dual_Filament/assets/100725052/1b574598-893c-4afc-afe3-964d636f7708)
+Questo e un remix del progetto https://github.com/HelgeKeck/rome![SB240_CW2_Integration_Mods v5](https://github.com/FBServiceTech3D/StealthBurner_Dual_Filament/assets/100725052/2ecd50f9-358b-4a9b-b1d9-61200859152f)
+
