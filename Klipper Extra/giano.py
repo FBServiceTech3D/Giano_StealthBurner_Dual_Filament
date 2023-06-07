@@ -4,7 +4,7 @@ from math import fabs
 from re import T
 import logging
 
-class ROME:
+class GIANO:
 
     # -----------------------------------------------------------------------------------------------------------------------------
     # Initialize
@@ -26,9 +26,9 @@ class ROME:
         self.register_handle_connect()
 
     def load_settings(self):
-        self.idler_stepper = None
+        # self.idler_stepper = None
 
-        self.rome_setup = self.config.getint('rome_setup', 0)
+        # self.giano_setup = self.config.getint('giano_setup', 0)
 
         self.Filament_Cache = []
         self.tool_count = self.config.getint('tool_count', 2)
@@ -74,13 +74,13 @@ class ROME:
         self.pheaters = self.printer.lookup_object('heaters')
         self.heater = self.extruder.get_heater()
 
-        if self.rome_setup == 1:
-            for manual_stepper in self.printer.lookup_objects('manual_stepper'):
-                rail_name = manual_stepper[1].get_steppers()[0].get_name()
-                if rail_name == 'manual_stepper idler_stepper':
-                    self.idler_stepper = manual_stepper[1]
-            if self.idler_stepper is None:
-                raise self.config.error("Idler Stepper not found!")
+        # if self.giano_setup == 1:
+        #     for manual_stepper in self.printer.lookup_objects('manual_stepper'):
+        #         rail_name = manual_stepper[1].get_steppers()[0].get_name()
+        #         if rail_name == 'manual_stepper idler_stepper':
+        #             self.idler_stepper = manual_stepper[1]
+        #     if self.idler_stepper is None:
+        #         raise self.config.error("Idler Stepper not found!")
 
         for filament_sensor in self.printer.lookup_objects('filament_switch_sensor'):
             sensor_name = filament_sensor[1].runout_helper.name
@@ -119,16 +119,16 @@ class ROME:
     # G-Code Registration
     # -----------------------------------------------------------------------------------------------------------------------------
     def register_commands(self):
-        self.gcode.register_command('HOME_ROME', self.cmd_HOME_ROME, desc=("HOME_ROME"))
+        self.gcode.register_command('HOME_GIANO', self.cmd_HOME_GIANO, desc=("HOME_GIANO"))
         self.gcode.register_command('LOAD_TOOL', self.cmd_LOAD_TOOL, desc=("LOAD_TOOL"))
         self.gcode.register_command('SELECT_TOOL', self.cmd_SELECT_TOOL, desc=("SELECT_TOOL"))
         self.gcode.register_command('UNLOAD_TOOL', self.cmd_UNLOAD_TOOL, desc=("UNLOAD_TOOL"))
         self.gcode.register_command('EJECT_TOOL', self.cmd_EJECT_TOOL, desc=("EJECT_TOOL"))
         self.gcode.register_command('CHANGE_TOOL', self.cmd_CHANGE_TOOL, desc=("CHANGE_TOOL"))
-        self.gcode.register_command('ROME_END_PRINT', self.cmd_ROME_END_PRINT, desc=("ROME_END_PRINT"))
-        self.gcode.register_command('ROME_START_PRINT', self.cmd_ROME_START_PRINT, desc=("ROME_START_PRINT"))
-        self.gcode.register_command('ROME_INSERT_GCODE', self.cmd_ROME_INSERT_GCODE, desc=("ROME_INSERT_GCODE"))
-        self.gcode.register_command('ROME_RUNOUT_GCODE', self.cmd_ROME_RUNOUT_GCODE, desc=("ROME_RUNOUT_GCODE"))
+        self.gcode.register_command('GIANO_END_PRINT', self.cmd_GIANO_END_PRINT, desc=("GIANO_END_PRINT"))
+        self.gcode.register_command('GIANO_START_PRINT', self.cmd_GIANO_START_PRINT, desc=("GIANO_START_PRINT"))
+        self.gcode.register_command('GIANO_INSERT_GCODE', self.cmd_GIANO_INSERT_GCODE, desc=("GIANO_INSERT_GCODE"))
+        self.gcode.register_command('GIANO_RUNOUT_GCODE', self.cmd_GIANO_RUNOUT_GCODE, desc=("GIANO_RUNOUT_GCODE"))
         self.gcode.register_command('LOAD_FILAMENTS', self.cmd_LOAD_FILAMENTS, desc=("LOAD_FILAMENTS"))
         self.gcode.register_command('Z_HOME_TEST', self.cmd_Z_HOME_TEST, desc=("Z_HOME_TEST"))
         self.gcode.register_command('F_RUNOUT', self.cmd_F_RUNOUT, desc=("F_RUNOUT"))
@@ -150,7 +150,7 @@ class ROME:
             # send notification
             self.gcode.run_script_from_command('_EXTRUDER_ERROR EXTRUDER=' + str(tool))
 
-            self.pause_rome()
+            self.pause_giano()
             return
         
         return
@@ -173,17 +173,17 @@ class ROME:
         tool = param.get_int('TOOL', None, minval=-1, maxval=self.tool_count)
         self.eject_filament(tool)
 
-    def cmd_HOME_ROME(self, param):
+    def cmd_HOME_GIANO(self, param):
         self.Homed = False
         if not self.home():
-            self.respond("Can not home ROME!")
+            self.respond("Can not home GIANO!")
 
     def cmd_CHANGE_TOOL(self, param):
         tool = param.get_int('TOOL', None, minval=0, maxval=self.tool_count)
         if not self.change_tool(tool):
-            self.pause_rome()
+            self.pause_giano()
 
-    def cmd_ROME_END_PRINT(self, param):
+    def cmd_GIANO_END_PRINT(self, param):
         self.cmd_origin = "gcode"
         self.infinite_spool = False
         self.gcode.run_script_from_command("END_PRINT")
@@ -195,8 +195,8 @@ class ROME:
             self.gcode.run_script_from_command('M84')
         self.Homed = False
 
-    def cmd_ROME_START_PRINT(self, param):
-        self.cmd_origin = "rome"
+    def cmd_GIANO_START_PRINT(self, param):
+        self.cmd_origin = "giano"
         self.mode = "native"
         self.infinite_spool = False
         self.Filament_Changes = 0
@@ -231,10 +231,10 @@ class ROME:
         self.gcode.run_script_from_command("SET_GCODE_VARIABLE MACRO=_START_PRINT_AFTER_HEATING_EXTRUDER VARIABLE=tool VALUE=" + str(tool + 1))
         self.gcode.run_script_from_command("START_PRINT BED_TEMP=" + str(bed_temp) + " EXTRUDER_TEMP=" + str(extruder_temp) + " CHAMBER_TEMP=" + str(chamber_temp))
 
-    def cmd_ROME_INSERT_GCODE(self, param):
+    def cmd_GIANO_INSERT_GCODE(self, param):
         self.insert_gcode()
 
-    def cmd_ROME_RUNOUT_GCODE(self, param):
+    def cmd_GIANO_RUNOUT_GCODE(self, param):
         self.runout_gcode()
 
     def cmd_LOAD_FILAMENTS(self, param):
@@ -274,8 +274,8 @@ class ROME:
 
     def home(self):
 
-        # homing rome
-        self.respond("Homing Rome!")
+        # homing giano
+        self.respond("Homing Giano!")
         self.Homed = False
         self.Paused = False
 
@@ -283,20 +283,20 @@ class ROME:
         if not self.can_home():
             return False
 
-        # home rome types
-        if self.rome_setup == 0:
+        # home giano types
+        if self.giano_setup == 0:
             # home extruder feeder
             if not self.home_extruder_feeder():
                 return False
-        elif self.rome_setup == 1:
-            # home mmu splitter
-            if not self.home_mmu_splitter():
-                return False
+        # elif self.giano_setup == 1:
+        #     # home mmu splitter
+        #     if not self.home_mmu_splitter():
+        #         return False
 
         # success
         self.Homed = True
         self.Selected_Filament = -1
-        self.respond("Welcome Home Rome!")
+        self.respond("Welcome Home Giano!")
         return True
 
     def can_home(self):
@@ -329,12 +329,12 @@ class ROME:
     def home_filaments(self):
      
         # home filaments
-        if self.rome_setup == 0:
+        if self.giano_setup == 0:
             if not self.home_extruder_filaments():
                 return False
-        elif self.rome_setup == 1:
-            if not self.home_mmu_splitter_filaments():
-                return False
+        # elif self.giano_setup == 1:
+        #     if not self.home_mmu_splitter_filaments():
+        #         return False
 
         # success
         return True
@@ -377,63 +377,63 @@ class ROME:
     # -----------------------------------------------------------------------------------------------------------------------------
     # Home MMU Splitter
     # -----------------------------------------------------------------------------------------------------------------------------
-    idler_selecting_speed = 125
-    idler_selecting_accel = 80
-    idler_home_position = 85
-    idler_homeing_speed = 40
-    idler_homeing_accel = 40
-    idler_positions = [5,20,35,50,65]
+    # idler_selecting_speed = 125
+    # idler_selecting_accel = 80
+    # idler_home_position = 85
+    # idler_homeing_speed = 40
+    # idler_homeing_accel = 40
+    # idler_positions = [5,20,35,50,65]
 
-    def home_mmu_splitter(self):
+    # def home_mmu_splitter(self):
         
-        # home idler
-        self.home_idler()
+    #     # home idler
+    #     self.home_idler()
 
-        # success
-        return True
+    #     # success
+    #     return True
 
-    def home_idler(self):
-        home_current = 0.1
-        driver_status = self.stepper_driver_status('idler_stepper')
-        self.gcode.run_script_from_command('SET_TMC_CURRENT STEPPER=idler_stepper CURRENT=' + str(home_current) + ' HOLDCURRENT=' + str(home_current))
-        self.idler_stepper.do_set_position(0.0)
-        self.stepper_move(self.idler_stepper, 7, True, self.idler_homeing_speed, self.idler_homeing_accel)
-        self.stepper_homing_move(self.idler_stepper, -95, True, self.idler_homeing_speed, self.idler_homeing_accel, 1)
-        self.idler_stepper.do_set_position(2.0)
-        self.stepper_move(self.idler_stepper, self.idler_home_position, True, self.idler_homeing_speed, self.idler_homeing_accel)
-        self.gcode.run_script_from_command('SET_TMC_CURRENT STEPPER=idler_stepper CURRENT=' + str(driver_status['run_current']) + ' HOLDCURRENT=' + str(driver_status['hold_current']))
+    # def home_idler(self):
+    #     home_current = 0.1
+    #     driver_status = self.stepper_driver_status('idler_stepper')
+    #     self.gcode.run_script_from_command('SET_TMC_CURRENT STEPPER=idler_stepper CURRENT=' + str(home_current) + ' HOLDCURRENT=' + str(home_current))
+    #     self.idler_stepper.do_set_position(0.0)
+    #     self.stepper_move(self.idler_stepper, 7, True, self.idler_homeing_speed, self.idler_homeing_accel)
+    #     self.stepper_homing_move(self.idler_stepper, -95, True, self.idler_homeing_speed, self.idler_homeing_accel, 1)
+    #     self.idler_stepper.do_set_position(2.0)
+    #     self.stepper_move(self.idler_stepper, self.idler_home_position, True, self.idler_homeing_speed, self.idler_homeing_accel)
+    #     self.gcode.run_script_from_command('SET_TMC_CURRENT STEPPER=idler_stepper CURRENT=' + str(driver_status['run_current']) + ' HOLDCURRENT=' + str(driver_status['hold_current']))
 
-    def home_mmu_splitter_filaments(self):
+    # def home_mmu_splitter_filaments(self):
          
-        # home all filaments
-        for i in range(1, self.tool_count + 1):
-            if not self.home_mmu_splitter_filament(i):
-                self.respond("could not home filaments!")
-                return False
+    #     # home all filaments
+    #     for i in range(1, self.tool_count + 1):
+    #         if not self.home_mmu_splitter_filament(i):
+    #             self.respond("could not home filaments!")
+    #             return False
 
-        # success
-        return True
+    #     # success
+    #     return True
 
-    def home_mmu_splitter_filament(self, filament):
+    # def home_mmu_splitter_filament(self, filament):
          
-        # select tool
-        self.select_tool(filament)
+    #     # select tool
+    #     self.select_tool(filament)
 
-        # home filament
-        self.gcode.run_script_from_command('G92 E0')
-        self.gcode.run_script_from_command('G0 E100 F' + str(self.filament_homing_speed_mms * 60))
-        self.gcode.run_script_from_command('M400')
-        if not self.y_filament_sensor_triggered():
-            self.respond("filament " + str(filament) + " not found!")
-            return True
+    #     # home filament
+    #     self.gcode.run_script_from_command('G92 E0')
+    #     self.gcode.run_script_from_command('G0 E100 F' + str(self.filament_homing_speed_mms * 60))
+    #     self.gcode.run_script_from_command('M400')
+    #     if not self.y_filament_sensor_triggered():
+    #         self.respond("filament " + str(filament) + " not found!")
+    #         return True
 
-        # park filament
-        if not self.park_filament():
-            self.respond("could not park filament " + str(filament) + "!")
-            return False
+    #     # park filament
+    #     if not self.park_filament():
+    #         self.respond("could not park filament " + str(filament) + "!")
+    #         return False
 
-        # success
-        return True
+    #     # success
+    #     return True
 
     # -----------------------------------------------------------------------------------------------------------------------------
     # Autoload
@@ -443,7 +443,7 @@ class ROME:
         logging.info("auto loading filament " + str(tool))
         self.respond("auto loading filament " + str(tool))
 
-        if self.rome_setup == 0:
+        if self.giano_setup == 0:
 
             # check hotend temperature
             if not self.extruder_can_extrude():
@@ -486,7 +486,7 @@ class ROME:
             self.respond("Heating up nozzle to " + str(self.heater.min_extrude_temp))
             self.extruder_set_temperature(self.heater.min_extrude_temp, True)
 
-        if self.rome_setup == 0:
+        if self.giano_setup == 0:
             # select filament
             self.select_tool(tool)
 
@@ -537,7 +537,7 @@ class ROME:
     # Change Tool
     # -----------------------------------------------------------------------------------------------------------------------------
     mode = "native"
-    cmd_origin = "rome"
+    cmd_origin = "giano"
 
     Filament_Changes = 0
     ooze_move_x = 0
@@ -551,7 +551,7 @@ class ROME:
     def change_tool(self, tool):
         self.respond("change_tool " + str(tool + 1))
 
-        self.cmd_origin = "rome"
+        self.cmd_origin = "giano"
 
         # change tool
         if self.Filament_Changes > 0:
@@ -604,7 +604,7 @@ class ROME:
                 self.respond("could not unload tool!")
                 return False
         else:
-            if self.cmd_origin == "rome":
+            if self.cmd_origin == "giano":
                 self.respond("Possible sensor failure!")
                 self.respond("Filament sensor should be triggered but it isnt!")
                 return False
@@ -648,18 +648,18 @@ class ROME:
                 self.respond("Unload not completed!")
                 return False
 
-        # release mmu splitter idler
-        if self.rome_setup == 1:
-            self.select_idler(-1)
+        # # release mmu splitter idler
+        # if self.giano_setup == 1:
+        #     self.select_idler(-1)
 
         # success
         return True
 
     def before_change(self):
         if self.mode == "native":
-            self.before_change_rome_native()
+            self.before_change_giano_native()
         elif self.mode == "slicer":
-            self.before_change_rome_slicer()
+            self.before_change_giano_slicer()
         
     def after_change(self):
         self.disable_toolhead_filament_sensor()
@@ -668,10 +668,10 @@ class ROME:
         self.gcode.run_script_from_command('_CONTINUE_PRINTING EXTRUDER=' + str(self.Selected_Filament))
 
     # -----------------------------------------------------------------------------------------------------------------------------
-    # Rome Native
+    # Giano Native
     # -----------------------------------------------------------------------------------------------------------------------------
 
-    def before_change_rome_native(self):
+    def before_change_giano_native(self):
         self.gcode.run_script_from_command('SAVE_GCODE_STATE NAME=PAUSE_state')
         self.exchange_old_position = self.toolhead.get_position()
 
@@ -687,11 +687,11 @@ class ROME:
         self.gcode.run_script_from_command('M400')
         
     # -----------------------------------------------------------------------------------------------------------------------------
-    # Rome Slicer
+    # Giano Slicer
     # -----------------------------------------------------------------------------------------------------------------------------
 
-    def before_change_rome_slicer(self):
-        self.respond("before_change_rome_slicer")
+    def before_change_giano_slicer(self):
+        self.respond("before_change_giano_slicer")
         self.gcode.run_script_from_command('SAVE_GCODE_STATE NAME=PAUSE_state')
         self.exchange_old_position = self.toolhead.get_position()
         self.gcode.run_script_from_command('M204 S' + str(self.wipe_tower_acceleration))
@@ -709,10 +709,10 @@ class ROME:
         else:
             self.respond("selecting tool " + str(tool))
         self.unselect_tool()
-        if self.rome_setup == 0:
+        if self.giano_setup == 0:
             self.select_tool_extruder_feeder(tool)
-        elif self.rome_setup == 1:
-            self.select_tool_mmu_splitter(tool)
+        # elif self.giano_setup == 1:
+        #     self.select_tool_mmu_splitter(tool)
         self.Selected_Filament = tool
         self.respond("tool " + str(tool) + " selected")
 
@@ -720,32 +720,32 @@ class ROME:
         if tool != 0:
             for i in range(1, self.tool_count + 1):
                 if tool == i or tool == -1:
-                    self.gcode.run_script_from_command('SYNC_EXTRUDER_MOTION EXTRUDER=rome_extruder_' + str(i) + ' MOTION_QUEUE=extruder')
+                    self.gcode.run_script_from_command('SYNC_EXTRUDER_MOTION EXTRUDER=giano_extruder_' + str(i) + ' MOTION_QUEUE=extruder')
 
     def select_tool_mmu_splitter(self, tool):
         self.select_idler(tool)
 
     def unselect_tool(self):
-        if self.rome_setup == 0:
+        if self.giano_setup == 0:
             self.unselect_tool_extruder_feeder()
-        elif self.rome_setup == 1:
+        elif self.giano_setup == 1:
             self.unselect_tool_mmu_splitter()
 
     def unselect_tool_extruder_feeder(self):
         self.Selected_Filament = -1
         for i in range(1, self.tool_count + 1):
-            self.gcode.run_script_from_command('SYNC_EXTRUDER_MOTION EXTRUDER=rome_extruder_' + str(i) + ' MOTION_QUEUE=')
+            self.gcode.run_script_from_command('SYNC_EXTRUDER_MOTION EXTRUDER=giano_extruder_' + str(i) + ' MOTION_QUEUE=')
 
     def unselect_tool_mmu_splitter(self):
         self.select_idler(-1)
 
-    def select_idler(self, tool):
-        if tool >= 0:
-            self.stepper_move(self.idler_stepper, self.idler_positions[tool - 1], True, self.idler_selecting_speed, self.idler_selecting_accel)
-            self.gcode.run_script_from_command('SYNC_EXTRUDER_MOTION EXTRUDER=pulley_extruder MOTION_QUEUE=extruder')
-        else:
-            self.stepper_move(self.idler_stepper, self.idler_home_position, True, self.idler_selecting_speed, self.idler_selecting_accel)
-            self.gcode.run_script_from_command('SYNC_EXTRUDER_MOTION EXTRUDER=pulley_extruder MOTION_QUEUE=')
+    # def select_idler(self, tool):
+    #     if tool >= 0:
+    #         self.stepper_move(self.idler_stepper, self.idler_positions[tool - 1], True, self.idler_selecting_speed, self.idler_selecting_accel)
+    #         self.gcode.run_script_from_command('SYNC_EXTRUDER_MOTION EXTRUDER=pulley_extruder MOTION_QUEUE=extruder')
+    #     else:
+    #         self.stepper_move(self.idler_stepper, self.idler_home_position, True, self.idler_selecting_speed, self.idler_selecting_accel)
+    #         self.gcode.run_script_from_command('SYNC_EXTRUDER_MOTION EXTRUDER=pulley_extruder MOTION_QUEUE=')
 
     # -----------------------------------------------------------------------------------------------------------------------------
     # Load Filament
@@ -755,7 +755,7 @@ class ROME:
 
         # set load distance
         load_distance = self.toolhead_sensor_to_bowden_parking_mm
-        if self.rome_setup == 0:
+        if self.giano_setup == 0:
             load_distance = self.toolhead_sensor_to_bowden_cache_mm
 
         # filament caching
@@ -772,24 +772,24 @@ class ROME:
                     if blocked_filament >= 0:
                         self.respond("Filament " + str(demanded_filament) + " is blocked by filament " + str(blocked_filament))
                         if not self.unload_filament_from_caching_position_to_reverse_bowden(blocked_filament):
-                            self.pause_rome()
+                            self.pause_giano()
                         else:
                             self.select_tool(demanded_filament)
 
         # find filament
-        if self.rome_setup == 1:
-            find_distance = 100
-            if is_cached:
-                load_distance = load_distance - find_distance
-                self.gcode.run_script_from_command('G92 E0')
-                self.gcode.run_script_from_command('G0 E' + str(find_distance) + ' F' + str(self.filament_homing_speed_mms * 60))
-                self.gcode.run_script_from_command('M400')
-                if not self.y_filament_sensor_triggered():
-                    self.gcode.run_script_from_command('G92 E0')
-                    self.gcode.run_script_from_command('G0 E-' + str(find_distance) + ' F' + str(self.filament_homing_speed_mms * 60))
-                    self.gcode.run_script_from_command('M400')
-                    self.respond("Could not find filament " + str(self.Selected_Filament) + "!")
-                    return False
+        # if self.giano_setup == 1:
+        #     find_distance = 100
+        #     if is_cached:
+        #         load_distance = load_distance - find_distance
+        #         self.gcode.run_script_from_command('G92 E0')
+        #         self.gcode.run_script_from_command('G0 E' + str(find_distance) + ' F' + str(self.filament_homing_speed_mms * 60))
+        #         self.gcode.run_script_from_command('M400')
+        #         if not self.y_filament_sensor_triggered():
+        #             self.gcode.run_script_from_command('G92 E0')
+        #             self.gcode.run_script_from_command('G0 E-' + str(find_distance) + ' F' + str(self.filament_homing_speed_mms * 60))
+        #             self.gcode.run_script_from_command('M400')
+        #             self.respond("Could not find filament " + str(self.Selected_Filament) + "!")
+        #             return False
         self.respond("Filament " + str(self.Selected_Filament) + " found!")
         
         # initial move
@@ -853,7 +853,7 @@ class ROME:
 
         # load filament into nozzle
         self.gcode.run_script_from_command('G92 E0')
-        if self.cmd_origin != "rome" or self.exchange_old_position == None or self.use_ooze_ex == 0:
+        if self.cmd_origin != "giano" or self.exchange_old_position == None or self.use_ooze_ex == 0:
             self.gcode.run_script_from_command('G0 E' + str(self.parking_position_to_nozzle_mm) + ' F' + str(self.nozzle_loading_speed_mms * 60))
         else:
             self.gcode.run_script_from_command('G0 E' + str(self.parking_position_to_nozzle_mm / 2) + ' X' + str(self.ooze_move_x) + ' F' + str(self.nozzle_loading_speed_mms * 60))
@@ -862,9 +862,9 @@ class ROME:
         self.gcode.run_script_from_command('G92 E0')
         self.gcode.run_script_from_command('M400')
 
-        # release mmu splitter idler
-        if self.rome_setup == 1:
-            self.select_idler(-1)
+        # # release mmu splitter idler
+        # if self.giano_setup == 1:
+        #     self.select_idler(-1)
 
         # success
         return True
@@ -877,7 +877,7 @@ class ROME:
         self.respond("unload_filament_from_nozzle_to_parking_position")
 
         # unload filament to parking position
-        if self.cmd_origin != "rome" or self.exchange_old_position == None or self.use_ooze_ex == 0:
+        if self.cmd_origin != "giano" or self.exchange_old_position == None or self.use_ooze_ex == 0:
             self.gcode.run_script_from_command('_UNLOAD_FROM_NOZZLE_TO_PARKING_POSITION PAUSE=3000')
         else:
             self.gcode.run_script_from_command('_UNLOAD_FROM_NOZZLE_TO_PARKING_POSITION PAUSE=1')
@@ -890,13 +890,13 @@ class ROME:
         self.respond("unload_filament_from_parking_position_to_toolhead_sensor")
         
         # select mmu splitter idler
-        if self.rome_setup == 1:
-            self.select_idler(self.Selected_Filament)
+        # if self.giano_setup == 1:
+        #     self.select_idler(self.Selected_Filament)
 
         # unload filament to toolhead sensor
         self.gcode.run_script_from_command('G92 E0')
         self.gcode.run_script_from_command('M400')
-        if self.cmd_origin != "rome" or self.exchange_old_position == None or self.use_ooze_ex == 0:
+        if self.cmd_origin != "giano" or self.exchange_old_position == None or self.use_ooze_ex == 0:
             self.gcode.run_script_from_command('G0 E-' + str(self.extruder_gear_to_parking_position_mm + self.toolhead_sensor_to_extruder_gear_mm) + ' F' + str(self.filament_parking_speed_mms * 60))
         else:
             self.gcode.run_script_from_command('G0 E-' + str(self.extruder_gear_to_parking_position_mm + self.toolhead_sensor_to_extruder_gear_mm) + ' X' + str(self.exchange_old_position[0]) + ' F' + str(self.filament_parking_speed_mms * 60))
@@ -913,7 +913,7 @@ class ROME:
 
         # set unload distance
         unload_distance = self.toolhead_sensor_to_bowden_parking_mm
-        if self.rome_setup == 0:
+        if self.giano_setup == 0:
             unload_distance = self.toolhead_sensor_to_bowden_cache_mm
 
         # filament caching
@@ -935,10 +935,10 @@ class ROME:
             return False
 
         # park filament
-        if self.rome_setup == 1:
-            if not is_cached:
-                if not self.park_filament():
-                    return False
+        # if self.giano_setup == 1:
+        #     if not is_cached:
+        #         if not self.park_filament():
+        #             return False
 
         # uncache filament
         if not is_cached:
@@ -963,9 +963,9 @@ class ROME:
             return False
 
         # park filament
-        if self.rome_setup == 1:
-            if not self.park_filament():
-                return False
+        # if self.giano_setup == 1:
+        #     if not self.park_filament():
+        #         return False
 
         # uncache filament
         self.uncache_filament(self.Selected_Filament)
@@ -1185,7 +1185,7 @@ class ROME:
     # -----------------------------------------------------------------------------------------------------------------------------
     Paused = False
 
-    def pause_rome(self):
+    def pause_giano(self):
         self.Paused = True
 
         # enable heater timeout
@@ -1193,9 +1193,9 @@ class ROME:
         #    self.enable_heater_timeout()
 
         # call pause macro 
-        self.gcode.run_script_from_command("_PAUSE_ROME IDLE_TIMEOUT=" + str(self.idle_timeout))
+        self.gcode.run_script_from_command("_PAUSE_GIANO IDLE_TIMEOUT=" + str(self.idle_timeout))
 
-    def resume_rome(self):
+    def resume_giano(self):
         self.Paused = False
 
         # disable heater timeout
@@ -1212,7 +1212,7 @@ class ROME:
         self.disable_toolhead_filament_sensor()
 
         # resume print
-        self.gcode.run_script_from_command("_RESUME_ROME")
+        self.gcode.run_script_from_command("_RESUME_GIANO")
 
     # -----------------------------------------------------------------------------------------------------------------------------
     # Helper
@@ -1289,5 +1289,5 @@ class ROME:
 # Entry Point
 # -----------------------------------------------------------------------------------------------------------------------------
 def load_config(config):
-    return ROME(config)
+    return GIANO(config)
 
