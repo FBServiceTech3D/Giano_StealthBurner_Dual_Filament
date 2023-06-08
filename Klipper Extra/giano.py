@@ -26,9 +26,9 @@ class GIANO:
         self.register_handle_connect()
 
     def load_settings(self):
-        # self.idler_stepper = None
+        self.idler_stepper = None
 
-        # self.giano_setup = self.config.getint('giano_setup', 0)
+        self.giano_setup = self.config.getint('giano_setup', 0)
 
         self.Filament_Cache = []
         self.tool_count = self.config.getint('tool_count', 2)
