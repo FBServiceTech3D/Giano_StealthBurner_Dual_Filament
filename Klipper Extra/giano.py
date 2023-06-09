@@ -228,8 +228,8 @@ class GIANO:
         self.disable_toolhead_filament_sensor()
 
         #self.gcode.run_script_from_command("SET_GCODE_VARIABLE MACRO=RatOS VARIABLE=relative_extrusion VALUE=True")
-        self.gcode.run_script_from_command("SET_GCODE_VARIABLE MACRO=_START_PRINT_AFTER_HEATING_EXTRUDER VARIABLE=tool VALUE=" + str(tool + 1))
-        self.gcode.run_script_from_command("START_PRINT_GIANO BED_TEMP=" + str(bed_temp) + " EXTRUDER_TEMP=" + str(extruder_temp) + " CHAMBER_TEMP=" + str(chamber_temp))
+        #self.gcode.run_script_from_command("SET_GCODE_VARIABLE MACRO=_START_PRINT_AFTER_HEATING_EXTRUDER VARIABLE=tool VALUE=" + str(tool + 1))
+        self.gcode.run_script_from_command("START_PRINT_GIANO BED_TEMP=" + str(bed_temp) + " EXTRUDER_TEMP=" + str(extruder_temp) + " CHAMBER_TEMP=" + str(chamber_temp)) + " TOOL="+ str(tool + 1)
 
     def cmd_GIANO_INSERT_GCODE(self, param):
         self.insert_gcode()
