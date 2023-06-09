@@ -145,7 +145,7 @@ class GIANO:
         temp = param.get_int('TEMP', None, minval=-1, maxval=self.heater.max_temp)
         
         # load tool
-        if not self.load_tool(tool, temp, True):
+        if not self.load_tool(tool,  True):
 
             # send notification
             self.gcode.run_script_from_command('_EXTRUDER_ERROR EXTRUDER=' + str(tool))
@@ -467,7 +467,7 @@ class GIANO:
                 self.cmd_origin = "gcode"
 
                 # load tool
-                if not self.load_tool(tool, -1, True):
+                if not self.load_tool(tool,  True):
                     # send notification
                     self.gcode.run_script_from_command('_EXTRUDER_ERROR EXTRUDER=' + str(tool))
                     self.respond("Autoload failed, please insert filament " + str(tool) + " and resume the print.")
@@ -524,7 +524,7 @@ class GIANO:
             self.select_tool(tool)
 
             # load tool
-            if not self.load_tool(tool, -1, True):
+            if not self.load_tool(tool,  True):
                 # send notification
                 self.gcode.run_script_from_command('_EXTRUDER_ERROR EXTRUDER=' + str(tool))
                 self.respond("Autload failed, please insert filament " + str(tool) + " and resume the print.")
@@ -556,7 +556,7 @@ class GIANO:
         # change tool
         if self.Filament_Changes > 0:
             self.before_change()
-            if not self.load_tool(tool + 1, -1, self.use_filament_caching):
+            if not self.load_tool(tool + 1, self.use_filament_caching):
 
                 # send notification
                 self.gcode.run_script_from_command('_EXTRUDER_ERROR EXTRUDER=' + str(tool))
@@ -568,32 +568,22 @@ class GIANO:
         # success
         return True
 
-    def load_tool(self, tool, temp, cache):
+    def load_tool(self, tool,  cache):
         logging.info("load_tool " + str(tool))
         self.respond("load_tool " + str(tool))
         
         # send notification
         self.gcode.run_script_from_command('_SELECT_EXTRUDER EXTRUDER=' + str(tool))
 
-        # set hotend temperature
-        if temp > 0:
-            self.set_hotend_temperature(temp)
-
         # home if not homed yet
         if not self.Homed:
             if not self.home():
                 return False
 
-        # set temp if configured and wait for it
-        if temp > 0:
-            self.respond("Waiting for heater...")
-            self.extruder_set_temperature(temp, True)
-
         # check hotend temperature
         if not self.extruder_can_extrude():
-            self.respond("Hotend too cold!")
-            self.respond("Heat up nozzle to " + str(self.heater.min_extrude_temp))
-            self.extruder_set_temperature(self.heater.min_extrude_temp, True)
+            self.respond("Hotend too cold! stopping filament change")
+            return False
 
         # enable filament sensor
         self.enable_toolhead_filament_sensor()
