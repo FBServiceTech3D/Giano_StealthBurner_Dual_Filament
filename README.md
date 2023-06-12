@@ -94,28 +94,9 @@
 
 ![20230612_094937](https://github.com/FBServiceTech3D/Giano_StealthBurner_Dual_Filament/assets/100725052/f7bf3b83-7755-4c3e-8825-77db9a956970)
 
-
-Here's a blank template to get started: To avoid retyping too much info. Do a search and replace with your text editor for the following: `github_username`, `repo_name`, `twitter_handle`, `linkedin_username`, `email_client`, `email`, `project_title`, `project_description`
-
-<p align="right">(<a href="#readme-top">back to top</a>)</p>
-
-
-
 ### Built With
 
-* [![Next][Next.js]][Next-url]
-* [![React][React.js]][React-url]
-* [![Vue][Vue.js]][Vue-url]
-* [![Angular][Angular.io]][Angular-url]
-* [![Svelte][Svelte.dev]][Svelte-url]
-* [![Laravel][Laravel.com]][Laravel-url]
-* [![Bootstrap][Bootstrap.com]][Bootstrap-url]
-* [![JQuery][JQuery.com]][JQuery-url]
 
-<p align="right">(<a href="#readme-top">back to top</a>)</p>
-
-
-<!-- GETTING STARTED -->
 ## Getting Started
 
 ### Giano Modes
@@ -161,33 +142,146 @@ The Native Mode handles the filament loading and unloading on the Wipe tower. Fa
 
 ###  Klipper Giano Installation
 
-1. Get a free API Key at [https://example.com](https://example.com)
-2. Clone the repo
-   ```sh
-   git clone https://github.com/FBServiceTech3D/Giano_StealthBurner_Dual_Filament.git
-   ```
-3. Install NPM packages
-   ```sh
-   npm install
-   ```
-4. Enter your API in `config.js`
-   ```js
-   const API_KEY = 'ENTER YOUR API';
-   ```
+1. Clone this repo
+``` shell
+ cd ~
+ git clone https://github.com/FBServiceTech3D/Giano_StealthBurner_Dual_Filament
+```
 
-<p align="right">(<a href="#readme-top">back to top</a>)</p>
+2. Connect in ssh and run 
+
+``` shell
+ cd ~/Giano_StealthBurner_Dual_Filament
+ ./install.sh
+```
+3. To update giano engine
+``` shell
+ cd ~/Giano_StealthBurner_Dual_Filament
+ ./update.sh
+```
+4. Configuration Update
+Go in the configuration folder and update this values:
+Motors update pin and current following your mcu instructions:
+``` yaml
+
+# -------------------------------------										
+# Giano Extruder 1
+# -------------------------------------										
+
+[extruder_stepper giano_extruder_1]
+extruder:
+step_pin: PE6
+dir_pin: !PA14
+enable_pin: !PE0
+microsteps: 64
+rotation_distance: 22.6789511
+full_steps_per_rotation: 200
+gear_ratio: 80:20
+
+[tmc2209 extruder_stepper giano_extruder_1]
+uart_pin: PD3
+run_current: 0.6
+stealthchop_threshold: 0
+interpolate: False
+driver_TBL: 1
+driver_TOFF: 3
+driver_HEND: 9
+driver_HSTRT: 7
+
+# -------------------------------------										
+# Giano Extruder 2
+# M4 Voron
+# -------------------------------------										
+[extruder_stepper giano_extruder_2]
+extruder:
+step_pin: PE2
+dir_pin: !PE3
+enable_pin: !PD4
+microsteps: 64
+rotation_distance: 22.6789511
+full_steps_per_rotation: 200
+gear_ratio: 80:20
+
+[tmc2209 extruder_stepper giano_extruder_2]
+uart_pin: PE1
+run_current: 0.6
+stealthchop_threshold: 0
+interpolate: False
+driver_TBL: 1
+driver_TOFF: 3
+driver_HEND: 9
+driver_HSTRT: 7
+
+
+```
+
+5. Config Giano variables
+
+| Name | Description |
+| ---  | --- |
+|heater_timeout: 6000                            | Heater Timeout in case of giano paused the print |
+|unload_filament_after_print: 0                  | 0 = Filament remains in the hoted at print ends <br> 1 = unloads filament after printing has finished   |
+|wipe_tower_acceleration: 5000                   | printer acceleration when printing the wipe tower  |
+|use_ooze_ex: 1                                  | 1 = giano distributes oozed material over the length of the wipe tower  0 = try your luck  |
+|use_filament_caching: 1                         | 1 = giano caches the filament right behind the toolhead sensor instead of completely unloading it <br>  0 = no caching |
+|extruder_push_and_pull_test: 1                  | 1 = test if filament could successfully loaded into extruder <br>  0 = do not test |
+|#filament_groups: 1:2,4:5                       | filament cache configuration, this tells giano which filament arrives in which bowden tube to the hotend |
+|nozzle_loading_speed_mms: 10                    | extruder speed when moving the filament between the parking position and the nozzle |
+|filament_homing_speed_mms: 50                   | extruder speed when moving the filament inside bowden tube |
+|filament_parking_speed_mms: 50                  | extruder speed when moving the filament between the filament sensor and the parking position |
+|parking_position_to_nozzle_mm: 50               | distance between the parking position and the nozzle |
+|toolhead_sensor_to_bowden_cache_mm: 75          | distance between the filament sensor and the filament caching position |
+|toolhead_sensor_to_bowden_parking_mm: 500       | distance between the filament sensor and the filament parking position |
+|extruder_gear_to_parking_position_mm: 40        | distance between the extruder gears and the parking position |
+|toolhead_sensor_to_extruder_gear_mm: 15         | distance between the filament sensor and the extruder gears |
+|tool_count: 2                                   | number of feeding extruders, fixed 2 in case of Giano standard |
+|giano_setup: 0                                  | 0 = multi extruder to direct extruder |
 
 
 
-<!-- USAGE EXAMPLES -->
+|<!-- USAGE EXAMPLES -->
 ## Usage
 
-Use this space to show useful examples of how a project can be used. Additional screenshots, code examples and demos work well in this space. You may also link to more resources.
+This is the list of gcodes availabe for Giano
 
-_For more examples, please refer to the [Documentation](https://example.com)_
+### GCodes
+`HOME_GIANO`  Hoomes both filament
+`LOAD_TOOL`
+`SELECT_TOOL`
+`UNLOAD_TOOL`
+`EJECT_TOOL`
+`CHANGE_TOOL`
+`GIANO_END_PRINT`
+`GIANO_START_PRINT`
+`GIANO_INSERT_GCODE`
+`GIANO_RUNOUT_GCODE`
+`LOAD_FILAMENTS`
+`Z_HOME_TEST`
+`F_RUNOUT`
+`F_INSERT`
+`SET_INFINITE_SPOOL`
 
-<p align="right">(<a href="#readme-top">back to top</a>)</p>
-
+### Customizable Macros included
+`_UNLOAD_FROM_NOZZLE_TO_PARKING_POSITION`
+`GIANO_LOAD_TOOL`
+`GIANO_UNLOAD_TOOL`
+`GIANO_SELECT_TOOL`
+`GIANO_EJECT_TOOL`
+`PAUSE_GIANO`
+`RESUME_GIANO`
+`LOAD_ALL_FILAMENTS`
+`SET_INFINITE_SPOOL`
+`_PAUSE_GIANO`
+`_RESUME_GIANO`
+`_SELECT_EXTRUDER`
+`_EXTRUDER_SELECTED`
+`_EXTRUDER_ERROR`
+`_CONTINUE_PRINTING`
+`_AUTOLOAD_RESUME_AFTER_INSERT`
+`_INFINITE_RESUME_AFTER_SWAP`
+`START_PRINT_GIANO`
+`END_PRINT`
+`_MOVE_AWAY`
 
 
 <!-- ROADMAP -->
