@@ -148,20 +148,16 @@ The Native Mode handles the filament loading and unloading on the Wipe tower. Fa
 1. Clone this repo
 ``` shell
  cd ~
- git clone https://github.com/FBServiceTech3D/Giano_StealthBurner_Dual_Filament
+ git clone https://github.com/FBServiceTech3D/Giano_StealthBurner_Dual_Filament.git
 ```
 
 2. Connect in ssh and run 
 
 ``` shell
- cd ~/Giano_StealthBurner_Dual_Filament
- ./install.sh
+ bash ~/Giano_StealthBurner_Dual_Filament/install.sh
 ```
-3. To update giano engine
-``` shell
- cd ~/Giano_StealthBurner_Dual_Filament
- ./update.sh
-```
+3. Restarting klipper Giano will appear in your availabe updates
+
 4. Configuration Update
 Go in the configuration folder and update this values:
 Motors update pin and current following your mcu instructions:
