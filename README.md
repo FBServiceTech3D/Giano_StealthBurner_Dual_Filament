@@ -40,10 +40,10 @@
   <p align="center">
     Klipper Multi Extruder
 
-A multi extruder to direct extruder solution for [Voron StealthBurner](https://vorondesign.com/voron_stealthburner)
+### A multi extruder to direct extruder solution for [Voron StealthBurner](https://vorondesign.com/voron_stealthburner)
     
     
-High speed multi material printing with as many extruders as you want
+ High speed multi material printing with as many extruders as you want
     <br />
     <a href="https://github.com/github_username/repo_name"><strong>Explore the docs »</strong></a>
     <br />
