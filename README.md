@@ -35,6 +35,13 @@ Every MM loading and unloading setting in the slicer will be deactivated and rep
 
 ![20230612_095047](https://github.com/FBServiceTech3D/Giano_StealthBurner_Dual_Filament/assets/100725052/3dc2fd88-93f9-49c9-8765-61148b4ee1a5)
 
+# SuperSlicer configuration:
+
+G-Code:
+Printer Start G-code
+GIANO_START_PRINT EXTRUDER_TEMP=[first_layer_temperature] BED_TEMP=[first_layer_bed_temperature] CHAMBER_TEMP=[chamber_temperature] TOOL=[initial_tool] WIPE_TOWER={wipe_tower} WIPE_TOWER_X={wipe_tower_x} WIPE_TOWER_Y={wipe_tower_y} WIPE_TOWER_WIDTH={wipe_tower_width} WIPE_TOWER_ROTATION_ANGLE={wipe_tower_rotation_angle} COOLING_TUBE_RETRACTION={cooling_tube_retraction} COOLING_TUBE_LENGTH={cooling_tube_length} PARKING_POS_RETRACTION={parking_pos_retraction} EXTRA_LOADING_MOVE={extra_loading_move}
+
+
 
 
 
