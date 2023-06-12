@@ -331,9 +331,8 @@ Distributed under the GNU General Public License v3.0 License. See [`LICENSE`](L
 <!-- CONTACT -->
 ## Contact
 
-[FB ServiceTech 3d](https://linktr.ee/fbservicetech3d)
-
-[GAB3D](https://www.youtube.com/@gab-3d)
+- [FB ServiceTech 3d](https://linktr.ee/fbservicetech3d)
+- GAB3D-[YouTube](https://www.youtube.com/@gab-3d) [GitHub](https://github.com/gab-3d/)
 
 Project Link: [Giano_StealthBurner_Dual_Filament](https://github.com/FBServiceTech3D/Giano_StealthBurner_Dual_Filament)
 
