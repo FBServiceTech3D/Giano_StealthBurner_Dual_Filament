@@ -205,7 +205,7 @@ Distributed under the MIT License. See `LICENSE.txt` for more information.
 <!-- CONTACT -->
 ## Contact
 
-[FB ServiceTech 3d]([https://twitter.com/twitter_handle](https://linktr.ee/fbservicetech3d)) - info@fbservicetech.it
+[FB ServiceTech 3d](https://linktr.ee/fbservicetech3d)
 
 GAB3D -
 
