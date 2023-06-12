@@ -56,8 +56,7 @@
   </p>
 </div>
 
-![SB240_CW2_Integration_Mods v5](https://github.com/FBServiceTech3D/Giano_StealthBurner_Dual_Filament/assets/100725052/71da8862-c3a1-4655-9933-cf8a8ded5d64)
-
+![SB240_CW2_Integration_Mods v5](https://github.com/FBServiceTech3D/Giano_StealthBurner_Dual_Filament/assets/100725052/3393defb-127d-405b-8dff-4e08acb12b1d)
 
 <!-- TABLE OF CONTENTS -->
 <details>
@@ -90,15 +89,16 @@
 <!-- ABOUT THE PROJECT -->
 ## About The Project
 
-![SB240_CW2_Integration_Mods v12s2](https://github.com/FBServiceTech3D/Giano_StealthBurner_Dual_Filament/assets/100725052/92ee60b2-31d3-4539-ade4-f49b9ec04bf2)
+![SB240_CW2_Integration_Mods v13ff](https://github.com/FBServiceTech3D/Giano_StealthBurner_Dual_Filament/assets/100725052/5cff657e-e45d-4f0c-9d16-cf6a58ec48fd)
 
 
 #### Giano, first of all, is a remix of the existing [Rome project](https://github.com/HelgeKeck/rome). We just managed to integrate it into the Voron StealthBurner tolhead and simplified for the specific Voron use 
 Giano is MUCH faster then any regular MMU or ERCF setup. The whole filament unloading and loading process is multiple times faster, not only because Giano just has to park the filament behind the y-junction. In its native mode, Giano handles the loading and unloading process and skips the slicer controlled part of it. This process is highly optimized for a specific Hotend / Filament combination. No more configuration of cooling moves, skinnydip, ramming, ....
  
- 
 
-![20230612_094937](https://github.com/FBServiceTech3D/Giano_StealthBurner_Dual_Filament/assets/100725052/f7bf3b83-7755-4c3e-8825-77db9a956970)
+
+![20230612_094937](https://github.com/FBServiceTech3D/Giano_StealthBurner_Dual_Filament/assets/100725052/b98e392d-cd3b-4dc0-9ac5-88c44e93fbab)
+
 
 ### Built With
 
@@ -115,18 +115,17 @@ The Native Mode handles the filament loading and unloading on the Wipe tower. Fa
 
 ### SuperSlicer config for Native Mode:
 
-![advanced](https://github.com/FBServiceTech3D/Giano_StealthBurner_Dual_Filament/assets/100725052/71b5662b-afeb-4c8f-84df-adf5e9ff9b40)
+![advanced](https://github.com/FBServiceTech3D/Giano_StealthBurner_Dual_Filament/assets/100725052/2542d794-6435-4713-b280-94f888c0028b)
 
-![capabilities](https://github.com/FBServiceTech3D/Giano_StealthBurner_Dual_Filament/assets/100725052/0809c041-d27d-4047-bd0f-899954224562)
+![capabilities](https://github.com/FBServiceTech3D/Giano_StealthBurner_Dual_Filament/assets/100725052/56837689-2172-4347-a51a-8e00bab7d415)
 
-![dip](https://github.com/FBServiceTech3D/Giano_StealthBurner_Dual_Filament/assets/100725052/afe13597-2fad-4c3e-b051-ca423245836b)
+![dip](https://github.com/FBServiceTech3D/Giano_StealthBurner_Dual_Filament/assets/100725052/ca64bed7-055b-4f99-9f50-fc8073370db6)
 
-![toolchange_parameters](https://github.com/FBServiceTech3D/Giano_StealthBurner_Dual_Filament/assets/100725052/9e0a78d1-6c5e-463e-951f-1f6078d911ba)
+![toolchange_parameters](https://github.com/FBServiceTech3D/Giano_StealthBurner_Dual_Filament/assets/100725052/b16d6cac-eaac-4b28-8c1f-e5681abdbe72)
 
-![toolchange_temperature](https://github.com/FBServiceTech3D/Giano_StealthBurner_Dual_Filament/assets/100725052/3fa14829-5457-462c-9492-43322fdf9500)
+![toolchange_temperature](https://github.com/FBServiceTech3D/Giano_StealthBurner_Dual_Filament/assets/100725052/482103ab-ebc0-4da8-8c7d-19f163c49135)
 
-![wipe_tower](https://github.com/FBServiceTech3D/Giano_StealthBurner_Dual_Filament/assets/100725052/0c1c1b70-eea7-4509-92d8-b18da7dae9c8)
-
+![wipe_tower](https://github.com/FBServiceTech3D/Giano_StealthBurner_Dual_Filament/assets/100725052/19eed010-d656-4b39-9f67-8cf0a1c5d9ff)
 
 ### Prerequisites
 
