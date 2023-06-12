@@ -41,9 +41,7 @@
 
 A multi extruder to direct extruder solution for [Voron StealthBurner](https://vorondesign.com/voron_stealthburner)
     
-    ![SB240_CW2_Integration_Mods v5 s](https://github.com/FBServiceTech3D/Giano_StealthBurner_Dual_Filament/assets/100725052/dd894760-e254-477b-895c-c986bd52fe40)
-
-
+    
 High speed multi material printing with as many extruders as you want
     <br />
     <a href="https://github.com/github_username/repo_name"><strong>Explore the docs »</strong></a>
@@ -57,7 +55,7 @@ High speed multi material printing with as many extruders as you want
   </p>
 </div>
 
-
+![SB240_CW2_Integration_Mods v5 s](https://github.com/FBServiceTech3D/Giano_StealthBurner_Dual_Filament/assets/100725052/dd894760-e254-477b-895c-c986bd52fe40)
 
 <!-- TABLE OF CONTENTS -->
 <details>
