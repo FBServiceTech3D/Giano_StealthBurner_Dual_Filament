@@ -143,7 +143,7 @@ The Native Mode handles the filament loading and unloading on the Wipe tower. Fa
 
 ### Prerequisites
 
-This is an example of how to list things you need to use the software and how to install them.
+#### SperSlicer Custom G-codes
 * Giano Start Print G-Code
   ```sh
   GIANO_START_PRINT EXTRUDER_TEMP=[first_layer_temperature] BED_TEMP=[first_layer_bed_temperature] CHAMBER_TEMP=[chamber_temperature] TOOL=[initial_tool] WIPE_TOWER={wipe_tower} WIPE_TOWER_X={wipe_tower_x} WIPE_TOWER_Y={wipe_tower_y} WIPE_TOWER_WIDTH={wipe_tower_width} WIPE_TOWER_ROTATION_ANGLE={wipe_tower_rotation_angle} COOLING_TUBE_RETRACTION={cooling_tube_retraction} COOLING_TUBE_LENGTH={cooling_tube_length} PARKING_POS_RETRACTION={parking_pos_retraction} EXTRA_LOADING_MOVE={extra_loading_move}
@@ -152,10 +152,11 @@ This is an example of how to list things you need to use the software and how to
   ```sh
   GIANO_END_PRINT
   ```
-  * Giano Tool CHANGE G-Code
+  
+ * Giano Tool CHANGE G-Code
   ```sh
   CHANGE_TOOL TOOL=[next_extruder]
-  ```
+  ```  
   
 
 ###  Klipper Giano Installation
