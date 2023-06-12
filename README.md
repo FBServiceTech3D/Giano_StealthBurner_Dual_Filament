@@ -25,13 +25,14 @@
 [![MIT License][license-shield]][license-url]
 [![LinkedIn][linkedin-shield]][linkedin-url]
 
+![SB240_CW2_Integration_Mods v5 s](https://github.com/FBServiceTech3D/Giano_StealthBurner_Dual_Filament/assets/100725052/dd894760-e254-477b-895c-c986bd52fe40)
 
 
 <!-- PROJECT LOGO -->
 <br />
 <div align="center">
   <a href="https://github.com/github_username/repo_name">
-    <img src="images/logo.png" alt="Logo" width="80" height="80">
+    <img src="IMG/logo.png" alt="Logo" width="80" height="80">
   </a>
 
 <h3 align="center">♈GIANO StealthBurner Dual Filament</h3>
@@ -55,7 +56,8 @@ High speed multi material printing with as many extruders as you want
   </p>
 </div>
 
-![SB240_CW2_Integration_Mods v5 s](https://github.com/FBServiceTech3D/Giano_StealthBurner_Dual_Filament/assets/100725052/dd894760-e254-477b-895c-c986bd52fe40)
+![SB240_CW2_Integration_Mods v5](https://github.com/FBServiceTech3D/Giano_StealthBurner_Dual_Filament/assets/100725052/71da8862-c3a1-4655-9933-cf8a8ded5d64)
+
 
 <!-- TABLE OF CONTENTS -->
 <details>
