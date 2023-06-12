@@ -90,7 +90,8 @@ High speed multi material printing with as many extruders as you want
 <!-- ABOUT THE PROJECT -->
 ## About The Project
 
-[![Product Name Screen Shot][product-screenshot]](https://example.com)
+![20230612_094937](https://github.com/FBServiceTech3D/Giano_StealthBurner_Dual_Filament/assets/100725052/f7bf3b83-7755-4c3e-8825-77db9a956970)
+
 
 Here's a blank template to get started: To avoid retyping too much info. Do a search and replace with your text editor for the following: `github_username`, `repo_name`, `twitter_handle`, `linkedin_username`, `email_client`, `email`, `project_title`, `project_description`
 
@@ -127,7 +128,7 @@ This is an example of how to list things you need to use the software and how to
   npm install npm@latest -g
   ```
 
-### Installation
+###  Klipper Giano Installation
 
 1. Get a free API Key at [https://example.com](https://example.com)
 2. Clone the repo
@@ -161,9 +162,9 @@ _For more examples, please refer to the [Documentation](https://example.com)_
 <!-- ROADMAP -->
 ## Roadmap
 
-- [ ] Feature 1
-- [ ] Feature 2
-- [ ] Feature 3
+- [x] Compliant and test 
+- [ ] Beta test on Voron Italia group
+- [ ] Public Release
     - [ ] Nested Feature
 
 See the [open issues](https://github.com/github_username/repo_name/issues) for a full list of proposed features (and known issues).
@@ -202,9 +203,11 @@ Distributed under the MIT License. See `LICENSE.txt` for more information.
 <!-- CONTACT -->
 ## Contact
 
-Your Name - [@twitter_handle](https://twitter.com/twitter_handle) - email@email_client.com
+[FB ServiceTech 3d]([https://twitter.com/twitter_handle](https://linktr.ee/fbservicetech3d)) - info@fbservicetech.it
 
-Project Link: [https://github.com/github_username/repo_name](https://github.com/github_username/repo_name)
+GAB3D -
+
+Project Link: [https://github.com/github_username/repo_name]([https://github.com/github_username/repo_name](https://github.com/FBServiceTech3D/Giano_StealthBurner_Dual_Filament))
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
