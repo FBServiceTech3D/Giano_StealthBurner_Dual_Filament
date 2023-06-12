@@ -333,7 +333,7 @@ Distributed under the GNU General Public License v3.0 License. See [`LICENSE`](L
 
 [FB ServiceTech 3d](https://linktr.ee/fbservicetech3d)
 
-GAB3D -
+[GAB3D](https://www.youtube.com/@gab-3d)
 
 Project Link: [Giano_StealthBurner_Dual_Filament](https://github.com/FBServiceTech3D/Giano_StealthBurner_Dual_Filament)
 
@@ -344,7 +344,7 @@ Project Link: [Giano_StealthBurner_Dual_Filament](https://github.com/FBServiceTe
 <!-- ACKNOWLEDGMENTS -->
 ## Acknowledgments
 
-* []()
+* [Project Rome](https://github.com/HelgeKeck/rome)
 * []()
 * []()
 
