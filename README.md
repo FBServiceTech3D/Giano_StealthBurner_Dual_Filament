@@ -115,7 +115,6 @@ Here's a blank template to get started: To avoid retyping too much info. Do a se
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
 
-
 <!-- GETTING STARTED -->
 ## Getting Started
 
@@ -127,14 +126,34 @@ The Classic Mode works exactly like the MMU or ERCF. You are responsible to conf
 
 The Native Mode handles the filament loading and unloading on the Wipe tower. Faster filament changes, less Slicer configuration needed and more control over the process.
 
+### SuperSlicer config for Native Mode:
+
+![advanced](https://github.com/FBServiceTech3D/Giano_StealthBurner_Dual_Filament/assets/100725052/71b5662b-afeb-4c8f-84df-adf5e9ff9b40)
+
+![capabilities](https://github.com/FBServiceTech3D/Giano_StealthBurner_Dual_Filament/assets/100725052/0809c041-d27d-4047-bd0f-899954224562)
+
+![dip](https://github.com/FBServiceTech3D/Giano_StealthBurner_Dual_Filament/assets/100725052/afe13597-2fad-4c3e-b051-ca423245836b)
+
+![toolchange_parameters](https://github.com/FBServiceTech3D/Giano_StealthBurner_Dual_Filament/assets/100725052/9e0a78d1-6c5e-463e-951f-1f6078d911ba)
+
+![toolchange_temperature](https://github.com/FBServiceTech3D/Giano_StealthBurner_Dual_Filament/assets/100725052/3fa14829-5457-462c-9492-43322fdf9500)
+
+![wipe_tower](https://github.com/FBServiceTech3D/Giano_StealthBurner_Dual_Filament/assets/100725052/0c1c1b70-eea7-4509-92d8-b18da7dae9c8)
+
 
 ### Prerequisites
 
 This is an example of how to list things you need to use the software and how to install them.
-* npm
+* Giano Start Print G-Code
   ```sh
-  npm install npm@latest -g
+  GIANO_START_PRINT EXTRUDER_TEMP=[first_layer_temperature] BED_TEMP=[first_layer_bed_temperature] CHAMBER_TEMP=[chamber_temperature] TOOL=[initial_tool] WIPE_TOWER={wipe_tower} WIPE_TOWER_X={wipe_tower_x} WIPE_TOWER_Y={wipe_tower_y} WIPE_TOWER_WIDTH={wipe_tower_width} WIPE_TOWER_ROTATION_ANGLE={wipe_tower_rotation_angle} COOLING_TUBE_RETRACTION={cooling_tube_retraction} COOLING_TUBE_LENGTH={cooling_tube_length} PARKING_POS_RETRACTION={parking_pos_retraction} EXTRA_LOADING_MOVE={extra_loading_move}
   ```
+* Giano END PRINT G-Code
+  ```sh
+  GIANO_END_PRINT
+  ```
+  
+  
 
 ###  Klipper Giano Installation
 
