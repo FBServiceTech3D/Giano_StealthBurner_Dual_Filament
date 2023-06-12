@@ -152,7 +152,10 @@ This is an example of how to list things you need to use the software and how to
   ```sh
   GIANO_END_PRINT
   ```
-  
+  * Giano Tool CHANGE G-Code
+  ```sh
+  CHANGE_TOOL TOOL=[next_extruder]
+  ```
   
 
 ###  Klipper Giano Installation
