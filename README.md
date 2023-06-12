@@ -218,7 +218,8 @@ driver_HSTRT: 7
 
 ```
 
-5. Config Giano variables
+5. Adjust config 
+#### Giano variables
 
 | Name | Description |
 | ---  | --- |
