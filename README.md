@@ -27,7 +27,7 @@
 
 
 
-<!-- ♈ -->
+<!-- PROJECT LOGO -->
 <br />
 <div align="center">
   <a href="https://github.com/github_username/repo_name">
@@ -37,7 +37,13 @@
 <h3 align="center">♈GIANO StealthBurner Dual Filament</h3>
 
   <p align="center">
-    project_description
+    Klipper Multi Extruder
+
+A multi extruder to direct extruder solution for [Voron StealthBurner](https://vorondesign.com/voron_stealthburner)
+    
+    ![SB240_CW2_Integration_Mods v5 s](https://github.com/FBServiceTech3D/StealthBurner_Dual_Filament/assets/100725052/081aae14-c2aa-4962-996b-4d964c13f736)
+
+High speed multi material printing with as many extruders as you want
     <br />
     <a href="https://github.com/github_username/repo_name"><strong>Explore the docs »</strong></a>
     <br />
