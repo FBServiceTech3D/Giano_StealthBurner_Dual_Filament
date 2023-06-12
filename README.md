@@ -22,7 +22,7 @@
 [![Forks][forks-shield]][forks-url]
 [![Stargazers][stars-shield]][stars-url]
 [![Issues][issues-shield]][issues-url]
-[![MIT License][license-shield]][license-url]
+[![GPL3][license-shield]][license-url]
 [![LinkedIn][linkedin-shield]][linkedin-url]
 
 ![SB240_CW2_Integration_Mods v5 s](https://github.com/FBServiceTech3D/Giano_StealthBurner_Dual_Filament/assets/100725052/dd894760-e254-477b-895c-c986bd52fe40)
@@ -266,7 +266,7 @@ Project Link: [Giano_StealthBurner_Dual_Filament](https://github.com/FBServiceTe
 [issues-shield]: https://img.shields.io/github/issues/github_username/repo_name.svg?style=for-the-badge
 [issues-url]: https://github.com/github_username/repo_name/issues
 [license-shield]: https://img.shields.io/github/license/github_username/repo_name.svg?style=for-the-badge
-[license-url]: https://github.com/github_username/repo_name/blob/master/LICENSE.txt
+[license-url]: https://github.com/FBServiceTech3D/Giano_StealthBurner_Dual_Filament/blob/main/LICENSE
 [linkedin-shield]: https://img.shields.io/badge/-LinkedIn-black.svg?style=for-the-badge&logo=linkedin&colorB=555
 [linkedin-url]: https://linkedin.com/in/linkedin_username
 [product-screenshot]: IMG/
