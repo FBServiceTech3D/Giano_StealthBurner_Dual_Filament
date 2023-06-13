@@ -59,6 +59,9 @@
 
 ![SB240_CW2_Integration_Mods v5](https://github.com/FBServiceTech3D/Giano_StealthBurner_Dual_Filament/assets/100725052/3393defb-127d-405b-8dff-4e08acb12b1d)
 
+[PDF DOC.pdf](https://github.com/FBServiceTech3D/Giano_StealthBurner_Dual_Filament/files/11733058/PDF.DOC.pdf)
+
+
 <!-- TABLE OF CONTENTS -->
 <details>
   <summary>Table of Contents</summary>
