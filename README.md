@@ -345,8 +345,8 @@ Project Link: [Giano_StealthBurner_Dual_Filament](https://github.com/FBServiceTe
 ## Acknowledgments
 
 * [Project Rome](https://github.com/HelgeKeck/rome)
-* []()
-* []()
+* [Voron Stealthburner](https://github.com/VoronDesign/Voron-Stealthburner)
+
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
