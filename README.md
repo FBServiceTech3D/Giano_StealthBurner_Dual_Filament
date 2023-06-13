@@ -59,8 +59,6 @@
 
 ![SB240_CW2_Integration_Mods v5](https://github.com/FBServiceTech3D/Giano_StealthBurner_Dual_Filament/assets/100725052/3393defb-127d-405b-8dff-4e08acb12b1d)
 
-[PDF DOC.pdf](https://github.com/FBServiceTech3D/Giano_StealthBurner_Dual_Filament/files/11733058/PDF.DOC.pdf)
-
 
 <!-- TABLE OF CONTENTS -->
 <details>
@@ -95,11 +93,11 @@
 
 ![SB240_CW2_Integration_Mods v13ff](https://github.com/FBServiceTech3D/Giano_StealthBurner_Dual_Filament/assets/100725052/5cff657e-e45d-4f0c-9d16-cf6a58ec48fd)
 
+[PDF DOC.pdf](https://github.com/FBServiceTech3D/Giano_StealthBurner_Dual_Filament/files/11733058/PDF.DOC.pdf)
 
 #### Giano, first of all, is a remix of the existing [Rome project](https://github.com/HelgeKeck/rome). We just managed to integrate it into the Voron StealthBurner tolhead and simplified for the specific Voron use 
 Giano is MUCH faster then any regular MMU or ERCF setup. The whole filament unloading and loading process is multiple times faster, not only because Giano just has to park the filament behind the y-junction. In its native mode, Giano handles the loading and unloading process and skips the slicer controlled part of it. This process is highly optimized for a specific Hotend / Filament combination. No more configuration of cooling moves, skinnydip, ramming, ....
  
-
 
 ![20230612_094937](https://github.com/FBServiceTech3D/Giano_StealthBurner_Dual_Filament/assets/100725052/b98e392d-cd3b-4dc0-9ac5-88c44e93fbab)
 
