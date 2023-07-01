@@ -4,10 +4,12 @@ from math import fabs
 from re import T
 import logging
 
+
 class GIANO:
     Selected_Filament = -1
     Homed = False
     Filament_Cache = []
+    Debug = False
     
     def __init__(self, config):
         self.config = config
@@ -22,6 +24,7 @@ class GIANO:
         self.z_filament_sensor = None
 
         gcode_macro = self.printer.load_object(config, 'gcode_macro')
+
         self.pre_unload_macro = gcode_macro.load_template(
             config, 'pre_unload_gcode', '')
         self.post_load_macro = gcode_macro.load_template(
@@ -64,7 +67,8 @@ class GIANO:
         self.extruder_gear_to_parking_position_mm = self.config.getfloat('extruder_gear_to_parking_position_mm', 40.0)
         self.parking_position_to_nozzle_mm = self.config.getfloat('parking_position_to_nozzle_mm', 65.0)
 
-
+    
+        
 
     def register_handle_connect(self):
         self.printer.register_event_handler("klippy:connect", self.execute_handle_connect)
@@ -95,13 +99,12 @@ class GIANO:
         self.gcode.register_command('G_HOME', self.cmd_G_HOME, desc=("G_HOME"))
         self.gcode.register_command('G_EJECT', self.cmd_G_EJECT, desc=("G_EJECT"))
 
-        #self.gcode.register_command('Z_HOME_TEST', self.cmd_Z_HOME_TEST, desc=("Z_HOME_TEST"))
+        self.gcode.register_command('Z_HOME_TEST', self.cmd_Z_HOME_TEST, desc=("Z_HOME_TEST"))
     
     # cmd implementation
     def cmd_Z_HOME_TEST(self,param):
-        filament=1
-        self.load_tool(1,True)
-
+        #self.respond(str(dir(self.pre_unload_macro.gcode)))
+        self.pre_unload_macro.run_gcode_from_command()
         return True
 
 
@@ -239,12 +242,12 @@ class GIANO:
             for i in range(1, self.tool_count + 1):
 
                 if tool == i or tool == -1:
-                    self.gcode.run_script_from_command('SYNC_EXTRUDER_MOTION EXTRUDER=giano_extruder_' + str(i) + ' MOTION_QUEUE=extruder')
+                    self.run_script_from_command('SYNC_EXTRUDER_MOTION EXTRUDER=giano_extruder_' + str(i) + ' MOTION_QUEUE=extruder')
   
     def unselect_tool_extruder_feeder(self):
         self.Selected_Filament = -1
         for i in range(1, self.tool_count + 1):
-            self.gcode.run_script_from_command('SYNC_EXTRUDER_MOTION EXTRUDER=giano_extruder_' + str(i) + ' MOTION_QUEUE=')
+            self.run_script_from_command('SYNC_EXTRUDER_MOTION EXTRUDER=giano_extruder_' + str(i) + ' MOTION_QUEUE=')
 # -----------------------------------------------------------------------------------------------------------------------------
 # Load Filament
 # -----------------------------------------------------------------------------------------------------------------------------
@@ -263,9 +266,9 @@ class GIANO:
         
         if not self.toolhead_filament_sensor_triggered():
             # initial move
-            self.gcode.run_script_from_command('G92 E0')
-            self.gcode.run_script_from_command('G0 E' + str(load_distance) + ' F' + str(self.filament_homing_speed_mms * 60))
-            self.gcode.run_script_from_command('M400')
+            self.run_script_from_command('G92 E0')
+            self.run_script_from_command('G0 E' + str(load_distance) + ' F' + str(self.filament_homing_speed_mms * 60))
+            self.run_script_from_command('M400')
         else:
              self.respond("Sensor is already triggered before first move...")
              return False
@@ -277,9 +280,9 @@ class GIANO:
         if not self.toolhead_filament_sensor_triggered():
             for i in range(max_step_count):
                 #self.respond("Reaching the sensor move:" + str(i))
-                self.gcode.run_script_from_command('G92 E0')
-                self.gcode.run_script_from_command('G0 E' + str(step_distance) + ' F' + str(self.filament_homing_speed_mms * 60))
-                self.gcode.run_script_from_command('M400')
+                self.run_script_from_command('G92 E0')
+                self.run_script_from_command('G0 E' + str(step_distance) + ' F' + str(self.filament_homing_speed_mms * 60))
+                self.run_script_from_command('M400')
                 if self.toolhead_filament_sensor_triggered():
                     self.respond("Sensor found at move:" + str(i))
                     break
@@ -308,22 +311,22 @@ class GIANO:
         self.respond("load_filament_from_toolhead_sensor_to_parking_position")
 
         # move filament to parking position
-        self.gcode.run_script_from_command('G92 E0')
-        self.gcode.run_script_from_command('G0 E' + str(self.toolhead_sensor_to_extruder_gear_mm + self.extruder_gear_to_parking_position_mm) + ' F' + str(self.filament_parking_speed_mms * 60))
-        self.gcode.run_script_from_command('M400')
+        self.run_script_from_command('G92 E0')
+        self.run_script_from_command('G0 E' + str(self.toolhead_sensor_to_extruder_gear_mm + self.extruder_gear_to_parking_position_mm) + ' F' + str(self.filament_parking_speed_mms * 60))
+        self.run_script_from_command('M400')
 
         # extruder push and pull test
         if self.extruder_push_and_pull_test:
             push_and_pull_offset = 10
-            self.gcode.run_script_from_command('G92 E0')
-            self.gcode.run_script_from_command('G0 E-' + str(self.toolhead_sensor_to_extruder_gear_mm + self.extruder_gear_to_parking_position_mm - push_and_pull_offset) + ' F' + str(self.filament_parking_speed_mms * 60))
-            self.gcode.run_script_from_command('M400')
+            self.run_script_from_command('G92 E0')
+            self.run_script_from_command('G0 E-' + str(self.toolhead_sensor_to_extruder_gear_mm + self.extruder_gear_to_parking_position_mm - push_and_pull_offset) + ' F' + str(self.filament_parking_speed_mms * 60))
+            self.run_script_from_command('M400')
             if not self.toolhead_filament_sensor_triggered():
                 self.respond("could not load filament into extruder!")
                 return False
-            self.gcode.run_script_from_command('G92 E0')
-            self.gcode.run_script_from_command('G0 E' + str(self.toolhead_sensor_to_extruder_gear_mm + self.extruder_gear_to_parking_position_mm - push_and_pull_offset) + ' F' + str(self.filament_parking_speed_mms * 60))
-            self.gcode.run_script_from_command('M400')
+            self.run_script_from_command('G92 E0')
+            self.run_script_from_command('G0 E' + str(self.toolhead_sensor_to_extruder_gear_mm + self.extruder_gear_to_parking_position_mm - push_and_pull_offset) + ' F' + str(self.filament_parking_speed_mms * 60))
+            self.run_script_from_command('M400')
 
         # success
         return True
@@ -332,12 +335,12 @@ class GIANO:
         self.respond("load_filament_from_parking_position_to_nozzle")
 
         # load filament into nozzle
-        self.gcode.run_script_from_command('G92 E0')
-        self.gcode.run_script_from_command('G0 E' + str(self.parking_position_to_nozzle_mm) + ' F' + str(self.nozzle_loading_speed_mms * 60))
+        self.run_script_from_command('G92 E0')
+        self.run_script_from_command('G0 E' + str(self.parking_position_to_nozzle_mm) + ' F' + str(self.nozzle_loading_speed_mms * 60))
 
-        self.gcode.run_script_from_command('G4 P1000')
-        self.gcode.run_script_from_command('G92 E0')
-        self.gcode.run_script_from_command('M400')
+        self.run_script_from_command('G4 P1000')
+        self.run_script_from_command('G92 E0')
+        self.run_script_from_command('M400')
 
         # success
         return True
@@ -360,7 +363,7 @@ class GIANO:
         if not self.load_tool(tool + 1, self.use_filament_caching):
 
             # send notification
-            #self.gcode.run_script_from_command('_EXTRUDER_ERROR EXTRUDER=' + str(tool))
+            #self.run_script_from_command('_EXTRUDER_ERROR EXTRUDER=' + str(tool))
 
             return False
         self.after_change()
@@ -374,7 +377,7 @@ class GIANO:
         self.respond("load_tool " + str(tool))
         
         # send notification
-        self.gcode.run_script_from_command('_SELECT_EXTRUDER EXTRUDER=' + str(tool))
+        # self.run_script_from_command('_SELECT_EXTRUDER EXTRUDER=' + str(tool))
 
         # home if not homed yet
         if not self.Homed:
@@ -417,7 +420,7 @@ class GIANO:
         self.respond("tool " + str(tool) + " loaded")
 
         # send notification
-        #self.gcode.run_script_from_command('_EXTRUDER_SELECTED EXTRUDER=' + str(tool))
+        #self.run_script_from_command('_EXTRUDER_SELECTED EXTRUDER=' + str(tool))
 
         return True
 
@@ -452,7 +455,7 @@ class GIANO:
         self.disable_toolhead_filament_sensor()
 
         # send notification
-        #self.gcode.run_script_from_command('_CONTINUE_PRINTING EXTRUDER=' + str(self.Selected_Filament))
+        #self.run_script_from_command('_CONTINUE_PRINTING EXTRUDER=' + str(self.Selected_Filament))
 
 # -----------------------------------------------------------------------------------------------------------------------------
 # Unload Filament
@@ -472,9 +475,9 @@ class GIANO:
         unload_distance = self.toolhead_sensor_to_bowden_parking_mm
 
         # eject filament
-        self.gcode.run_script_from_command('G92 E0')
-        self.gcode.run_script_from_command('G0 E-' + str(unload_distance) + ' F' + str(self.filament_homing_speed_mms * 60))
-        self.gcode.run_script_from_command('M400')
+        self.run_script_from_command('G92 E0')
+        self.run_script_from_command('G0 E-' + str(unload_distance) + ' F' + str(self.filament_homing_speed_mms * 60))
+        self.run_script_from_command('M400')
 
         # check if filament is ejected from toolhead
         if self.toolhead_filament_sensor_triggered():
@@ -493,9 +496,9 @@ class GIANO:
         self.select_tool(filament)
 
         # eject filament
-        self.gcode.run_script_from_command('G92 E0')
-        self.gcode.run_script_from_command('G0 E-' + str(self.toolhead_sensor_to_bowden_parking_mm - self.toolhead_sensor_to_bowden_cache_mm) + ' F' + str(self.filament_homing_speed_mms * 60))
-        self.gcode.run_script_from_command('M400')
+        self.run_script_from_command('G92 E0')
+        self.run_script_from_command('G0 E-' + str(self.toolhead_sensor_to_bowden_parking_mm - self.toolhead_sensor_to_bowden_cache_mm) + ' F' + str(self.filament_homing_speed_mms * 60))
+        self.run_script_from_command('M400')
 
         # check if filament is ejected
         if self.toolhead_filament_sensor_triggered():
@@ -537,9 +540,9 @@ class GIANO:
 
         # find toolhead sensor
         for i in range(max_step_count):
-            self.gcode.run_script_from_command('G92 E0')
-            self.gcode.run_script_from_command('G0 E-' + str(accuracy_in_mm) + ' F' + str(self.filament_homing_speed_mms * 60))
-            self.gcode.run_script_from_command('M400')
+            self.run_script_from_command('G92 E0')
+            self.run_script_from_command('G0 E-' + str(accuracy_in_mm) + ' F' + str(self.filament_homing_speed_mms * 60))
+            self.run_script_from_command('M400')
             if not self.toolhead_filament_sensor_triggered():
                 break
 
@@ -558,9 +561,9 @@ class GIANO:
 
         # find toolhead sensor
         for n in range(max_step_count):
-            self.gcode.run_script_from_command('G92 E0')
-            self.gcode.run_script_from_command('G0 E' + str(accuracy_in_mm) + ' F' + str(self.filament_homing_speed_mms * 60))
-            self.gcode.run_script_from_command('M400')
+            self.run_script_from_command('G92 E0')
+            self.run_script_from_command('G0 E' + str(accuracy_in_mm) + ' F' + str(self.filament_homing_speed_mms * 60))
+            self.run_script_from_command('M400')
             if self.toolhead_filament_sensor_triggered():
                 break
 
@@ -574,19 +577,22 @@ class GIANO:
         self.respond("unload_filament_from_parking_position_to_toolhead_sensor")
         
         # unload filament to toolhead sensor
-        self.gcode.run_script_from_command('G92 E0')
-        self.gcode.run_script_from_command('M400')
+        self.run_script_from_command('G92 E0')
+        self.run_script_from_command('M400')
   
-        self.gcode.run_script_from_command('G0 E-' + str(self.extruder_gear_to_parking_position_mm + self.toolhead_sensor_to_extruder_gear_mm) + ' F' + str(self.filament_parking_speed_mms * 60))
+        self.run_script_from_command('G0 E-' + str(self.extruder_gear_to_parking_position_mm + self.toolhead_sensor_to_extruder_gear_mm) + ' F' + str(self.filament_parking_speed_mms * 60))
   
-        self.gcode.run_script_from_command('M400')
+        self.run_script_from_command('M400')
 
         # success
         return True
 ############################################################################################################################################################################
 # Helpers
 ############################################################################################################################################################################
-
+    def run_script_from_command(self,cmd):
+        if self.Debug: self.respond(cmd)
+        self.gcode.run_script_from_command(cmd)
+        
     def respond(self, message):
         self.gcode.respond_raw(message)
 
@@ -620,7 +626,7 @@ class GIANO:
         #    self.enable_heater_timeout()
 
         # call pause macro 
-        self.gcode.run_script_from_command("_PAUSE_GIANO IDLE_TIMEOUT=" + str(self.idle_timeout))
+        self.run_script_from_command("_PAUSE_GIANO IDLE_TIMEOUT=" + str(self.idle_timeout))
 
 # -----------------------------------------------------------------------------------------------------------------------------
 # Entry Point
