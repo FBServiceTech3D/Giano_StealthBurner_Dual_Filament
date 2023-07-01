@@ -20,6 +20,12 @@ class GIANO:
         self.y1_filament_sensor = None
         self.y2_filament_sensor = None
         self.z_filament_sensor = None
+
+        gcode_macro = self.printer.load_object(config, 'gcode_macro')
+        self.pre_unload_macro = gcode_macro.load_template(
+            config, 'pre_unload_gcode', '')
+        self.post_load_macro = gcode_macro.load_template(
+            config, 'post_load_gcode', '')
         
         self.load_settings()
         self.register_commands()
@@ -57,6 +63,8 @@ class GIANO:
         self.toolhead_sensor_to_extruder_gear_mm = self.config.getfloat('toolhead_sensor_to_extruder_gear_mm', 45.0)
         self.extruder_gear_to_parking_position_mm = self.config.getfloat('extruder_gear_to_parking_position_mm', 40.0)
         self.parking_position_to_nozzle_mm = self.config.getfloat('parking_position_to_nozzle_mm', 65.0)
+
+
 
     def register_handle_connect(self):
         self.printer.register_event_handler("klippy:connect", self.execute_handle_connect)
@@ -435,10 +443,12 @@ class GIANO:
         
     def before_change(self):
         self.respond("Before change")
+        self.pre_unload_macro.run_gcode_from_command()
         return True
         
     def after_change(self):
         self.respond("After change")
+        self.post_load_macro.run_gcode_from_command()
         self.disable_toolhead_filament_sensor()
 
         # send notification
