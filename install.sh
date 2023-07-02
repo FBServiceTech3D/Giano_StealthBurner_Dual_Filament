@@ -3,11 +3,18 @@
 
 echo "running Install.sh"
 
-#check if  a symbolic link to the file ~/Giano_StealthBurner_Dual_Filament/Klipper Extra/giano.py  in ~/klipper/klippy/extras/giano.py exist if not create it
+#check if  a symbolic link to the file ~/Giano_StealthBurner_Dual_Filament/Klipper_Extra/giano.py  in ~/klipper/klippy/extras/giano.py exist if not create it
 if [ ! -L ~/klipper/klippy/extras/giano.py ]; then
     echo "Creating symbolic link to giano.py"
     ln -s ~/Giano_StealthBurner_Dual_Filament/Klipper_Extra/giano.py ~/klipper/klippy/extras/giano.py
 fi
+#check if  a symbolic link to the file ~/Giano_StealthBurner_Dual_Filament/Klipper_Macro/giano_macro.cfg  in ~/printer_data/config/giano_macro.cfg exist if not create it
+if [ ! -L ~/printer_data/config/giano_macro.cfg ]; then
+    echo "Creating symbolic link to giano_macro.cfg"
+    ln -s ~/Giano_StealthBurner_Dual_Filament/Klipper_Macro/giano_macro.cfg ~/printer_data/config/giano_macro.cfg
+fi
+
+
 
 #check if the string 'Giano_StealthBurner_Dual_Filament.git' exists in the file ~/printer_data/config/moonraker.conf
 if grep -q "Giano_StealthBurner_Dual_Filament.git" ~/printer_data/config/moonraker.conf; then
@@ -29,17 +36,25 @@ install_script: install.sh
     " >> ~/printer_data/config/moonraker.conf
 fi
 
-#check if the string 'Giano_StealthBurner_Dual_Filament' exists in the file ~/printer_data/config/printer.cfg
-if grep -q "Giano_StealthBurner_Dual_Filament" ~/printer_data/config/printer.cfg; then
-    echo "Giano_StealthBurner_Dual_Filament already in printer.cfg"
+
+#Check if the string includegiano exists in ~/printer_data/config/printer.cfg if not add the string includegiano on top of the file
+if grep -q "[include giano.cfg]" ~/printer_data/config/printer.cfg; then
+    echo "includegiano already in printer.cfg"
 else
-    echo "Adding Giano_StealthBurner_Dual_Filament to printer.cfg"
+    echo "Adding includegiano to printer.cfg"
+    sed -i '1s/^/[include giano.cfg]\n/' ~/printer_data/config/printer.cfg
+fi
 
-#copy Klipper_Macro/giano.cfg to ~/printer_data/config/
-cp ~/Giano_StealthBurner_Dual_Filament/Klipper_Macro/giano.cfg ~/printer_data/config/
+#Check if the string includegiano exists in ~/printer_data/config/printer.cfg if not add the string includegiano on top of the file
+if grep -q "[include giano_marco.cfg]" ~/printer_data/config/printer.cfg; then
+    echo "includegiano already in printer.cfg"
+else
+    echo "Adding includegiano to printer.cfg"
+    sed -i '1s/^/[include giano_marco.cfg]\n/' ~/printer_data/config/printer.cfg
+fi
 
-echo  "
-# Giano_StealthBurner_Dual_Filament
-[include giano.cfg]
-" >> ~/printer_data/config/printer.cfg
+#Check il the file giano.cfg exists in ~/printer_data/config/ if not copy it from ~/Giano_StealthBurner_Dual_Filament/Klipper_Config/giano.cfg
+if [ ! -f ~/printer_data/config/giano.cfg ]; then
+    echo "Copying giano.cfg to ~/printer_data/config/"
+    cp ~/Giano_StealthBurner_Dual_Filament/Klipper_Config/giano.cfg ~/printer_data/config/giano.cfg
 fi
