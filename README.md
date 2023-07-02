@@ -296,7 +296,8 @@ Project Link: [Giano_StealthBurner_Dual_Filament](https://github.com/FBServiceTe
 
 * [Project Rome](https://github.com/HelgeKeck/rome)
 * [Voron Stealthburner](https://github.com/VoronDesign/Voron-Stealthburner)
-
+* ([EnragedRabbitProject](https://github.com/EtteGit/EnragedRabbitProject/tree/main)
+  
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
