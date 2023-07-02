@@ -118,7 +118,7 @@ No special slicer configuration a required, only classic MMU Setup.
 
 No special start gcode or end gcode
 
-In the file giano_bambu.cfg you can see the macro I use to avoid purge tower like in this video.
+In the file giano_bambu.cfg you can see the macro I use to avoid purge tower like in this [video](https://youtube.com/shorts/Jlu3IUiA1i4).
 
 Thanks ERCF for the tip macr
 
