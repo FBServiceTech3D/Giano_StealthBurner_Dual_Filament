@@ -107,45 +107,17 @@ Giano is MUCH faster then any regular MMU or ERCF setup. The whole filament unlo
 
 ## Getting Started
 
-### Giano Modes
+Giano is super simple: 
+- You can call `GIANO_HOME` to position the filaments near the toolheads _not required_
+-  You can use `T0` or `GIANO_FILAMENT_1` to select the first filament.
+-  You can use `T1` or `GIANO_FILAMENT_2` to select the second filament.
+-  You can use `EJECT_TOOL` In the print end to unload the filament
 
-#### Giano can operate in two different modes, Native and Classic.
 
-The Classic Mode works exactly like the MMU or ERCF. You are responsible to configure the Slicer like you would for the MMU or ERCF.
+No special slicer configuration a required, only classic MMU Setup.
 
-The Native Mode handles the filament loading and unloading on the Wipe tower. Faster filament changes, less Slicer configuration needed and more control over the process.
+No special start gcode or end gcode
 
-### SuperSlicer config for Native Mode:
-
-![advanced](https://github.com/FBServiceTech3D/Giano_StealthBurner_Dual_Filament/assets/100725052/2542d794-6435-4713-b280-94f888c0028b)
-
-![capabilities](https://github.com/FBServiceTech3D/Giano_StealthBurner_Dual_Filament/assets/100725052/56837689-2172-4347-a51a-8e00bab7d415)
-
-![dip](https://github.com/FBServiceTech3D/Giano_StealthBurner_Dual_Filament/assets/100725052/ca64bed7-055b-4f99-9f50-fc8073370db6)
-
-![toolchange_parameters](https://github.com/FBServiceTech3D/Giano_StealthBurner_Dual_Filament/assets/100725052/b16d6cac-eaac-4b28-8c1f-e5681abdbe72)
-
-![toolchange_temperature](https://github.com/FBServiceTech3D/Giano_StealthBurner_Dual_Filament/assets/100725052/482103ab-ebc0-4da8-8c7d-19f163c49135)
-
-![wipe_tower](https://github.com/FBServiceTech3D/Giano_StealthBurner_Dual_Filament/assets/100725052/19eed010-d656-4b39-9f67-8cf0a1c5d9ff)
-
-### Prerequisites
-
-#### SperSlicer Custom G-codes
-* Giano Start Print G-Code
-  ```sh
-  GIANO_START_PRINT EXTRUDER_TEMP=[first_layer_temperature] BED_TEMP=[first_layer_bed_temperature] CHAMBER_TEMP=[chamber_temperature] TOOL=[initial_tool] WIPE_TOWER={wipe_tower} WIPE_TOWER_X={wipe_tower_x} WIPE_TOWER_Y={wipe_tower_y} WIPE_TOWER_WIDTH={wipe_tower_width} WIPE_TOWER_ROTATION_ANGLE={wipe_tower_rotation_angle} COOLING_TUBE_RETRACTION={cooling_tube_retraction} COOLING_TUBE_LENGTH={cooling_tube_length} PARKING_POS_RETRACTION={parking_pos_retraction} EXTRA_LOADING_MOVE={extra_loading_move}
-  ```
-* Giano END PRINT G-Code
-  ```sh
-  GIANO_END_PRINT
-  ```
-  
- * Giano Tool CHANGE G-Code
-  ```sh
-  CHANGE_TOOL TOOL=[next_extruder]
-  ```  
-  
 
 ###  Klipper Giano Installation
 
@@ -223,24 +195,24 @@ driver_HSTRT: 7
 
 | Name | Description |
 | ---  | --- |
-|heater_timeout: 6000                            | Heater Timeout in case of giano paused the print |
-|unload_filament_after_print: 0                  | 0 = Filament remains in the hoted at print ends <br> 1 = unloads filament after printing has finished   |
-|wipe_tower_acceleration: 5000                   | printer acceleration when printing the wipe tower  |
-|use_ooze_ex: 1                                  | 1 = giano distributes oozed material over the length of the wipe tower  0 = try your luck  |
 |use_filament_caching: 1                         | 1 = giano caches the filament right behind the toolhead sensor instead of completely unloading it <br>  0 = no caching |
 |extruder_push_and_pull_test: 1                  | 1 = test if filament could successfully loaded into extruder <br>  0 = do not test |
-|#filament_groups: 1:2,4:5                       | filament cache configuration, this tells giano which filament arrives in which bowden tube to the hotend |
+| ---  | --- |
 |nozzle_loading_speed_mms: 10                    | extruder speed when moving the filament between the parking position and the nozzle |
 |filament_homing_speed_mms: 50                   | extruder speed when moving the filament inside bowden tube |
 |filament_parking_speed_mms: 50                  | extruder speed when moving the filament between the filament sensor and the parking position |
+| ---  | --- |
 |parking_position_to_nozzle_mm: 50               | distance between the parking position and the nozzle |
 |toolhead_sensor_to_bowden_cache_mm: 75          | distance between the filament sensor and the filament caching position |
 |toolhead_sensor_to_bowden_parking_mm: 500       | distance between the filament sensor and the filament parking position |
 |extruder_gear_to_parking_position_mm: 40        | distance between the extruder gears and the parking position |
 |toolhead_sensor_to_extruder_gear_mm: 15         | distance between the filament sensor and the extruder gears |
+| ---  | --- |
 |tool_count: 2                                   | number of feeding extruders, fixed 2 in case of Giano standard |
-|giano_setup: 0                                  | 0 = multi extruder to direct extruder |
-
+|debug_level|0 no debug, 1 normal, 2 verbose, 3 All commands|
+| ---  | --- |
+|pre_unload_gcode|This occurs before the unload call - usefull to move to a parking location and or make a filament tip|
+|post_load_gcode|This occurs after the filament change - usefull to purge, clean the nozzel and return to previous state|
 
 
 |<!-- USAGE EXAMPLES -->
@@ -249,43 +221,20 @@ driver_HSTRT: 7
 This is the list of gcodes availabe for Giano
 
 ### GCodes
-`HOME_GIANO`  Hoomes both filament
-`LOAD_TOOL`
-`SELECT_TOOL`
-`UNLOAD_TOOL`
-`EJECT_TOOL`
-`CHANGE_TOOL`
-`GIANO_END_PRINT`
-`GIANO_START_PRINT`
-`GIANO_INSERT_GCODE`
-`GIANO_RUNOUT_GCODE`
-`LOAD_FILAMENTS`
-`Z_HOME_TEST`
-`F_RUNOUT`
-`F_INSERT`
-`SET_INFINITE_SPOOL`
+- `HOME_GIANO` - Hoomes both filament
+- `GIANO_LOAD_ALL_FILAMENTS`- Similar to home, home both filaments
+- `EJECT_TOOL` - Eject from nozzle all filaments
+- `GIANO_FILAMENT_1` - Select filament 1 
+- `GIANO_FILAMENT_2` - Select filament 2
 
-### Customizable Macros included
-`_UNLOAD_FROM_NOZZLE_TO_PARKING_POSITION`
-`GIANO_LOAD_TOOL`
-`GIANO_UNLOAD_TOOL`
-`GIANO_SELECT_TOOL`
-`GIANO_EJECT_TOOL`
-`PAUSE_GIANO`
-`RESUME_GIANO`
-`LOAD_ALL_FILAMENTS`
-`SET_INFINITE_SPOOL`
-`_PAUSE_GIANO`
-`_RESUME_GIANO`
-`_SELECT_EXTRUDER`
-`_EXTRUDER_SELECTED`
-`_EXTRUDER_ERROR`
-`_CONTINUE_PRINTING`
-`_AUTOLOAD_RESUME_AFTER_INSERT`
-`_INFINITE_RESUME_AFTER_SWAP`
-`START_PRINT_GIANO`
-`END_PRINT`
-`_MOVE_AWAY`
+### Customizable Macros 
+- `_PAUSE_GIANO` occurs when giano encounter an error
+- `_RESUME_GIANO` resume printing
+
+### Customizable movemets 
+- `pre_unload_gcode` - This occurs before the unload call - usefull to move to a parking location and or make a filament tip
+- `post_load_gcode` - This occurs after the filament change - usefull to purge, clean the nozzel and return to previous state
+
 
 
 <!-- ROADMAP -->
