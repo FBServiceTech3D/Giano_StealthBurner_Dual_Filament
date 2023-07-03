@@ -218,10 +218,7 @@ class GIANO:
 
     def select_tool(self, tool=-1):
         if self.Debug>0: self.respond("select_tool tool:" + str(tool))
-        if (self.Selected_Filament == tool):
-            self.respond("Tool " + str(tool) + " already selected!")
-            return True
-        
+    
         # This code selects a specific tool by calling the `select_tool_extruder_feeder` method with the specified `tool` parameter. 
         # If `tool` is 0, all tools are unselected. If `tool` is -1, all tools are selected. 
         # The `Selected_Filament` attribute of the `giano` object is set to the selected tool.
@@ -372,21 +369,24 @@ class GIANO:
 
     def change_tool(self, tool):
         self.respond("change_tool " + str(tool + 1) + " number of changes: " + str(self.Filament_Changes) + " Selected_Filament: " + str(self.Selected_Filament))
+        if (self.Selected_Filament == tool+1):
+            self.respond("Tool " + str(tool+1) + " already selected!")
+            return True
+        else:
+            # change tool
+            #if self.Filament_Changes > 0:
+            if self.Filament_Changes>0: self.before_change()
+            if not self.load_tool(tool + 1, self.use_filament_caching):
 
-        # change tool
-        #if self.Filament_Changes > 0:
-        if self.Filament_Changes>0: self.before_change()
-        if not self.load_tool(tool + 1, self.use_filament_caching):
+                # send notification
+                #self.run_script_from_command('_EXTRUDER_ERROR EXTRUDER=' + str(tool))
 
-            # send notification
-            #self.run_script_from_command('_EXTRUDER_ERROR EXTRUDER=' + str(tool))
+                return False
+            self.after_change()
+            self.Filament_Changes = self.Filament_Changes + 1
 
-            return False
-        self.after_change()
-        self.Filament_Changes = self.Filament_Changes + 1
-
-        # success
-        return True
+            # success
+            return True
 
     def load_tool(self, tool,  cache):
         logging.info("load_tool " + str(tool))
