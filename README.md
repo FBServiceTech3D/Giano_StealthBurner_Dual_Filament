@@ -118,6 +118,9 @@ No special slicer configuration a required, only classic MMU Setup.
 
 No special start gcode or end gcode
 
+In the file giano_bambu.cfg you can see the macro I use to avoid purge tower like in this [video](https://youtube.com/shorts/Jlu3IUiA1i4).
+
+Thanks ERCF for the tip macr
 
 ###  Klipper Giano Installation
 
@@ -295,7 +298,8 @@ Project Link: [Giano_StealthBurner_Dual_Filament](https://github.com/FBServiceTe
 
 * [Project Rome](https://github.com/HelgeKeck/rome)
 * [Voron Stealthburner](https://github.com/VoronDesign/Voron-Stealthburner)
-
+* ([EnragedRabbitProject](https://github.com/EtteGit/EnragedRabbitProject/tree/main)
+  
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
