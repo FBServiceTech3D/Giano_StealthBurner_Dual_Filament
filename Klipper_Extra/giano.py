@@ -375,14 +375,14 @@ class GIANO:
         else:
             # change tool
             #if self.Filament_Changes > 0:
-            if self.Filament_Changes>0: self.before_change()
+            
             if not self.load_tool(tool + 1, self.use_filament_caching):
 
                 # send notification
                 #self.run_script_from_command('_EXTRUDER_ERROR EXTRUDER=' + str(tool))
 
                 return False
-            self.after_change()
+            
             self.Filament_Changes = self.Filament_Changes + 1
 
             # success
@@ -433,7 +433,7 @@ class GIANO:
 
         # success
         self.respond("tool " + str(tool) + " loaded")
-
+        self.after_change()
         # send notification
         #self.run_script_from_command('_EXTRUDER_SELECTED EXTRUDER=' + str(tool))
 
@@ -443,6 +443,7 @@ class GIANO:
         if self.Debug>0: self.respond("unload_tool new_filament: " +str(new_filament))
         if self.Debug>0: self.respond("Selected filament:" +str(self.Selected_Filament))
         # select tool
+        self.before_change()
         self.select_tool(self.Selected_Filament)
 
         
