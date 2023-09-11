@@ -463,14 +463,15 @@ class GIANO:
         
     def before_change(self):
         if self.Debug>0: self.respond("Before change")
+        self.toolhead_filament_sensor.runout_helper.runout_pause = False
         self.pre_unload_macro.run_gcode_from_command()
         return True
         
     def after_change(self):
         if self.Debug>0: self.respond("After change")
         self.post_load_macro.run_gcode_from_command()
-        self.disable_toolhead_filament_sensor()
-
+        #self.disable_toolhead_filament_sensor()
+        self.toolhead_filament_sensor.runout_helper.runout_pause = True
         # send notification
         #self.run_script_from_command('_CONTINUE_PRINTING EXTRUDER=' + str(self.Selected_Filament))
 
