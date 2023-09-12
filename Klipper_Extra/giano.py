@@ -123,6 +123,7 @@ class GIANO:
         if self.use_filament_caching:
             self.uncache_all()     
         self.Homed = False
+        self.Selected_Filament = -1
 
 
     def cmd_G_SELECT_TOOL(self, param):
